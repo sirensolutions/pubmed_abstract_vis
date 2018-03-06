@@ -1,0 +1,19 @@
+<div ng-controller="ChemSearchVisController" class="chem-search">
+  <div ng-show="!searchCompleted">
+    <label>Compound in SMILES format: </label>
+    <input type="text" ng-model="vis.params.smiles">
+    <button ng-click="createFilter()">Create Filter</button>
+
+    <div>
+      stringency: {{stringency}}%
+      <input type="range" name="range" ng-model="stringency" min="{{min}}" max="{{max}}" value="85" step="1">
+    </div>
+  </div>
+
+  <div class='molecule' ng-show="searchCompleted">
+    Current searched molecule:
+    <div>
+      <img src="" id="componentDiagram">
+    </div>
+  </div>
+</div>

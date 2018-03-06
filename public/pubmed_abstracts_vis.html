@@ -1,0 +1,45 @@
+<div ng-controller="PubmedAbstractsVisController">
+  <div ng-repeat="hit in hits|limitTo:limit track by hit._index+hit._type+hit._id+hit._score"
+       class="snippet"
+       style="width: 99%; border:1px #ddd solid; margin: 4px; padding: 4px; float: left">
+    <!-- Title -->
+    <div>
+      <!--<a target="_blank" href="//europepmc.org/abstract/med/{{hit._source.pub_id}}">{{hit._source.title}}-->
+      <a target="_blank" href="" class="publication-title" data-pub-id="{{hit._source.pub_id}}">{{hit._source.title}}
+      </a>
+    </div>
+
+    <!-- Authors -->
+    <div style="margin-top: 0.5em;" ng-model="showAll">
+      <div ng-model="showOption" ng-mouseover="showOption=true" ng-mouseout="showOption=false">
+        <span ng-if=!showAll>
+          {{hit._source.authors[0].short_name}} <span ng-show="hit._source.authors.length > 1">et al</span>.
+        </span>
+        <span ng-if="showAll">
+          <span ng-repeat="author in hit._source.authors">
+            {{author.short_name}}{{$index < hit._source.authors.length-2 ? ', ' : ''}}{{$index==hit._source.authors.length-2 ? ' and ' : ''}}
+          </span>
+        </span>
+        <span ng-show="showOption" ng-click="showAll=!showAll" style="color:#328CAA; font-size:0.8em">
+          <span ng-if="!showAll">[Show all {{hit._source.authors.length}} authors]</span>
+          <span ng-if="showAll">[Show compact]</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Journal and issue -->
+    <div style="margin-top:0.5em">
+      <span>{{hit._source.journal.medlineAbbreviation}}</span>
+      <span><b>{{hit._source.pub_date.split('-')[0]}}</b></span>
+      <span>{{hit._source.journal_reference.volume}}</span>
+      <span style="margin-left=5px">({{hit._source.journal_reference.issue}})</span>
+      <span>{{hit._source.journal_reference.pgn || ''}}</span>
+    </div>
+
+    <!-- Abstract -->
+    <!--<div ng-bind-html="hit._source.abstract_classes_plus" style="margin-top:0.5em">-->
+    <!--</div>-->
+    <abstract-render abstract="hit._source.abstract_classes"></abstract-render>
+  </div>
+</div>
+<div style="clear: both;"></div>
