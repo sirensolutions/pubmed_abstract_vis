@@ -11,7 +11,8 @@ module.directive('abstractRender', function ($compile, $sce, Private) {
     restrict: 'E',
     template: '',
     scope: {
-      abstract: '=',
+      data: '=',
+      field: '='
     },
     link: function (scope, $element, attrs) {
       const queryFilter = Private(FilterBarQueryFilterProvider);
@@ -60,10 +61,13 @@ module.directive('abstractRender', function ($compile, $sce, Private) {
         queryFilter.addFilters([filter]);
       };
 
-      // const div = document.createElement('div');
-      // div.innerHTML = scope.abstract;
-      // $element[0].appendChild(div);
-      const dom = $compile(`<div>${scope.abstract}</div>`)(scope);
+      scope.$watch('field', function () {
+        d3.select($element[0]).select('.tagged-text').remove();
+        scope.abstract = scope.data[scope.field];
+        const dom = $compile(`<div class="tagged-text">${scope.abstract}</div>`)(scope);
+        $element.append(dom);
+      });
+
 
       // Create self filter
       d3.selectAll('.publication-title')
@@ -88,8 +92,6 @@ module.directive('abstractRender', function ($compile, $sce, Private) {
             label
           });
         });
-
-      $element.append(dom);
     }
   };
 });

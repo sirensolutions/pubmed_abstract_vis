@@ -1,7 +1,7 @@
 import 'plugins/pubmed_abstracts_vis/pubmed_abstracts_vis.less';
 import 'plugins/pubmed_abstracts_vis/pubmed_abstracts_vis_controller';
 import template from 'plugins/pubmed_abstracts_vis/pubmed_abstracts_vis.html';
-import paramsTemplate from 'plugins/pubmed_abstracts_vis/pubmed_abstracts_vis_params.html';
+import 'plugins/pubmed_abstracts_vis/pubmed_abstracts_vis_params';
 import _ from 'lodash';
 import { toJson } from 'angular';
 
@@ -27,8 +27,14 @@ function PubmedAbstractsVisProvider(Private, config) {
     description: 'Display of NLP entities in pubmed abstracts',
     template,
     params: {
-      editor: paramsTemplate
+      defaults: {
+        field: ''
+      },
+      editor: '<pubmed-abstracts-vis-params></pubmed-abstracts-vis-params>'
     },
+    // params: {
+    //   editor: paramsTemplate
+    // },
     init: function (vis, savedSearch) {
       if (!vis.params.pageSize) {
         vis.params.pageSize = config.get('discover:sampleSize');

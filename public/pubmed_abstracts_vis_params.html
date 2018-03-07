@@ -1,8 +1,12 @@
 <div class="form-group">
   <div>
-    <label>Formatted abstract field</label>
-    <input type="text" ng-model="vis.params.field">
     <label>Abstracts per page</label>
     <input type="text" ng-model="vis.params.pageSize">
+    <div class="form-group">
+      <label>Field</label>
+      <select ng-options="field.name as field.displayName group by field.type for field in listFields"
+              ng-class="{ 'red-border' : vis.params.field === ''}"
+              ng-model="vis.params.field" class="form-control"></select>
+    </div>
   </div>
 </div>
