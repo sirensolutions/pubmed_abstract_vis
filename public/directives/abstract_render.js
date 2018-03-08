@@ -61,37 +61,42 @@ module.directive('abstractRender', function ($compile, $sce, Private) {
         queryFilter.addFilters([filter]);
       };
 
-      scope.$watch('field', function () {
+      function formatAbstract() {
         d3.select($element[0]).select('.tagged-text').remove();
         scope.abstract = scope.data[scope.field];
         const dom = $compile(`<div class="tagged-text">${scope.abstract}</div>`)(scope);
         $element.append(dom);
+
+        // Create self filter
+        d3.select($element[0]).select('.publication-title')
+          .on('click', function () {
+            const id = d3.select(this)
+              .attr('data-pub-id');
+            scope.createIdFilter(id);
+          });
+
+        // Scan the dom elements and attach filtering behaviour
+        d3.select($element[0]).selectAll('[data-entity="GENE"],[data-entity="DISEASE"],[data-entity="DRUG"],[data-entity="TARGET&DISEASE"')
+          .on('click', function () {
+            const el = d3.select(this);
+            const reference = el.attr('reference');
+            const referenceDb = el.attr('reference-db');
+            const dataEntity = el.attr('data-entity');
+            const label = el.text();
+            scope.createEntityFilter({
+              reference,
+              reference_db: referenceDb,
+              data_entity: dataEntity,
+              label
+            });
+          });
+      }
+
+      scope.$watch('field', function () {
+        formatAbstract();
       });
 
-
-      // Create self filter
-      d3.selectAll('.publication-title')
-        .on('click', function() {
-          const id = d3.select(this)
-            .attr('data-pub-id');
-          scope.createIdFilter(id);
-        });
-
-      // Scan the dom elements and attach filtering behaviour
-      d3.selectAll('[data-entity="GENE"],[data-entity="DISEASE"],[data-entity="DRUG"],[data-entity="TARGET&DISEASE"')
-        .on('click', function () {
-          const el = d3.select(this);
-          const reference = el.attr('reference');
-          const referenceDb = el.attr('reference-db');
-          const dataEntity = el.attr('data-entity');
-          const label = el.text();
-          scope.createEntityFilter({
-            reference,
-            reference_db: referenceDb,
-            data_entity: dataEntity,
-            label
-          });
-        });
+      formatAbstract();
     }
   };
 });
