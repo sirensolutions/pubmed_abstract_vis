@@ -68,7 +68,9 @@ module.directive('abstractRender', function ($compile, $sce, Private) {
         $element.append(dom);
 
         // Create self filter
-        d3.select($element[0]).select('.publication-title')
+        // d3.select($element[0]).select('.publication-title')
+        // TODO: This is creating new events for all the papers every time. Should be improved (affecting to this abstract only)
+        d3.selectAll('.publication-title')
           .on('click', function () {
             const id = d3.select(this)
               .attr('data-pub-id');
