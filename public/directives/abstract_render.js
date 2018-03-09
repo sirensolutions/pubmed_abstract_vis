@@ -18,12 +18,22 @@ module.directive('abstractRender', function ($compile, $sce, Private) {
       const queryFilter = Private(FilterBarQueryFilterProvider);
 
       scope.createIdFilter = function (id) {
+        let idParsed = '';
+        try {
+          const parsed = JSON.parse(id);
+          if (angular.isArray(parsed)) {
+            idParsed = parsed[0];
+          }
+        } catch (e) {
+          idParsed = id;
+        }
+
         const filter = {
           query: {
             bool: {
               filter: {
                 term: {
-                  pub_id: id
+                  pub_id: idParsed
                 }
               }
             }

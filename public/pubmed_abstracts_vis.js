@@ -15,8 +15,6 @@ function PubmedAbstractsVisProvider(Private, config) {
   const VisType = Private(VisVisTypeProvider);
   const TemplateVisType = Private(TemplateVisTypeProvider);
 
-  console.warn('loading pubmed abstracts widget...');
-
   // return the visType object, which kibana will use to display and configure new
   // Vis object of this type.
   return new TemplateVisType({
@@ -41,8 +39,6 @@ function PubmedAbstractsVisProvider(Private, config) {
       }
 
       if (savedSearch) {
-        console.warn('Saved search true in root js');
-        console.log(savedSearch);
         const uiState = JSON.parse(this.uiStateJSON); // init method is called with this set to the saved visualization
         if (!uiState.sort) {
           uiState.sort = _.clone(savedSearch.sort);
