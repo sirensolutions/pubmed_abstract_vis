@@ -23,6 +23,8 @@ module.directive('abstractRender', function ($compile, $sce, Private) {
           const parsed = JSON.parse(id);
           if (angular.isArray(parsed)) {
             idParsed = parsed[0];
+          } else {
+            idParsed = parsed;
           }
         } catch (e) {
           idParsed = id;
@@ -39,7 +41,7 @@ module.directive('abstractRender', function ($compile, $sce, Private) {
             }
           },
           meta: {
-            alias: `publication id: ${id}`
+            alias: `publication id: ${idParsed}`
           }
         };
         queryFilter.addFilters([filter]);
