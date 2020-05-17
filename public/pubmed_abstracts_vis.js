@@ -1,7 +1,7 @@
-import 'plugins/pubmed_abstracts_vis/pubmed_abstracts_vis.less';
-import 'plugins/pubmed_abstracts_vis/pubmed_abstracts_vis_controller';
-import template from 'plugins/pubmed_abstracts_vis/pubmed_abstracts_vis.html';
-import 'plugins/pubmed_abstracts_vis/pubmed_abstracts_vis_params';
+import 'plugins/nlp_viz/pubmed_abstracts_vis.less';
+import 'plugins/nlp_viz/pubmed_abstracts_vis_controller';
+import template from 'plugins/nlp_viz/pubmed_abstracts_vis.html';
+import 'plugins/nlp_viz/pubmed_abstracts_vis_params';
 import _ from 'lodash';
 import { toJson } from 'angular';
 
@@ -19,24 +19,32 @@ function PubmedAbstractsVisProvider(Private, config) {
   // Vis object of this type.
   return new TemplateVisType({
     name: 'pubmed_abstracts',
-    title: 'Pubmed Abstracts',
-    icon: 'fa-book',
-    category: VisType.CATEGORY.SIREN,
-    description: 'Display of NLP entities in pubmed abstracts',
+    title: 'NLP Highlighter',
+    icon: 'fa-highlighter',
+    category: VisType.CATEGORY.TEXTUAL,
+    description: 'Display of NLP entities in tagged text',
     template,
     params: {
       defaults: {
-        field: ''
+        field: '',
+        nlptagsfield: '',
+        nlptagtypefield: '',
+        nlptagidfield: '',
+        titlefield: '',
+        tagcolor: '',
+        limit: ''
       },
       editor: '<pubmed-abstracts-vis-params></pubmed-abstracts-vis-params>'
     },
-    // params: {
-    //   editor: paramsTemplate
-    // },
+
     init: function (vis, savedSearch) {
-      if (!vis.params.pageSize) {
-        vis.params.pageSize = config.get('discover:sampleSize');
+//      if (!vis.params.limit) {
+//        vis.params.limit = config.get('discover:sampleSize');
+//      }
+      if(! vis.params.legendid){
+          vis.params.legendid = (Math.floor(Math.random() * (10000000 - 1000000 + 1)) + 1000000);
       }
+
 
       if (savedSearch) {
         const uiState = JSON.parse(this.uiStateJSON); // init method is called with this set to the saved visualization

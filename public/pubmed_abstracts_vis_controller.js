@@ -7,18 +7,43 @@ const module = uiModules.get('kibana/pubmed_abstracts');
 module.controller('PubmedAbstractsVisController', function ($scope) {
 
   // Visualisation options
-  // const size = $scope.vis.params.pageSize || 10;
-  //
-  // $scope.limit = size;
   $scope.field = $scope.vis.params.field;
-  $scope.limit = $scope.vis.params.pageSize || 10;
+  $scope.nlptagsfield = $scope.vis.params.nlptagsfield;
+  $scope.nlptagidfield = $scope.vis.params.nlptagidfield;
+  $scope.titlefield = $scope.vis.params.titlefield;
+  $scope.limit = $scope.vis.params.limit || 10;
+  $scope.legendid = $scope.vis.params.legendid;
+
+  $scope.tagcolor = {};
+  for (var prop in $scope.vis.params) {
+     if(prop.startsWith('tagtype')){
+        var color = $scope.vis.params['tagcolor' + prop.substring(7)];
+        var type = $scope.vis.params[prop];
+        $scope.tagcolor[type] = color;
+     }
+  }
+
   $scope.searchSource.size($scope.limit);
 
   $scope.$watch('esResponse', resp => {
     if (resp) {
+
       $scope.hits = resp.hits.hits;
       $scope.field = $scope.vis.params.field;
-      $scope.limit = $scope.vis.params.pageSize || 10;
+      $scope.nlptagsfield = $scope.vis.params.nlptagsfield;
+      $scope.nlptagidfield = $scope.vis.params.nlptagidfield;
+      $scope.titlefield = $scope.vis.params.titlefield;
+      $scope.limit = $scope.vis.params.limit || 10;
+      $scope.legendid = $scope.vis.params.legendid;
+
+      $scope.tagcolor = {};
+      for (var prop in $scope.vis.params) {
+         if(prop.startsWith('tagtype')){
+            var color = $scope.vis.params['tagcolor' + prop.substring(7)];
+            var type = $scope.vis.params[prop];
+            $scope.tagcolor[type] = color;
+         }
+      }
       $scope.searchSource.size($scope.limit);
     }
   });

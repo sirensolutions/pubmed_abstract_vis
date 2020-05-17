@@ -1,12 +1,54 @@
 <div class="form-group">
   <div>
-    <label>Abstracts per page</label>
-    <input type="text" ng-model="vis.params.pageSize">
+    <label>Documents per page</label>
+    <input type="text" ng-model="vis.params.limit">
     <div class="form-group">
-      <label>Field</label>
+      <label>Text Field</label>
       <select ng-options="field.name as field.displayName group by field.type for field in listFields"
               ng-class="{ 'red-border' : vis.params.field === ''}"
               ng-model="vis.params.field" class="form-control"></select>
     </div>
+    <label>Tag ID Field</label><br/>
+    <input type="text" ng-model="vis.params.nlptagidfield" ng-class="{ 'red-border' : vis.params.nlptagidfield === ''}">
+    <div class="form-group">
+      <label>NLP Grouped Tags Field</label>
+      <select ng-options="field.name as field.displayName group by field.type for field in listFields"
+              ng-class="{ 'red-border' : vis.params.nlptagsfield === ''}"
+              ng-model="vis.params.nlptagsfield" class="form-control"></select>
+    </div>
+    <div class="form-group">
+      <label>Header Field</label>
+      <select ng-options="field.name as field.displayName group by field.type for field in listFields"
+              ng-class="{ 'red-border' : vis.params.titlefield === ''}"
+              ng-model="vis.params.titlefield" class="form-control"></select>
+    </div>
+    
+    <label>Tag Colors</label>
+  <ul>
+    <li ng-repeat="tagcolor in tagcolors">
+      <input style="width:80px"
+             placeholder="tag"
+             type="text" ng-model="vis.params['tagtype' + tagcolor.$$hashKey]">
+      <div style="display:inline">
+        <input
+          placeholder="color"
+          colorpicker
+          data-test-subj="createIndexPatternColorInput"
+          ng-model="vis.params['tagcolor' + tagcolor.$$hashKey]"
+          ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }"
+          name="color"
+          type="text"
+          autocomplete="off"
+          style="width:80px"
+        />
+        <div class="nlp-tag-entity-color"
+             ng-style="{ 'background-color': vis.params['tagcolor' + tagcolor.$$hashKey]  ? vis.params['tagcolor' + tagcolor.$$hashKey] : 'white' }"></div>
+      </div>
+      
+      <span  class="kuiIcon fa-times" ng-click="deleteTagColor(tagcolor)"></span>
+    </li>
+  </ul>
+     <button style="margin-left: 25px" ng-click="addTagColor()" class="kuiIcon fa-plus"></button>
+    <div ng-model="vis.params.legendid"></div>
   </div>
 </div>

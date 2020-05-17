@@ -22,210 +22,102 @@
   vertical-align: middle;
   margin: 0px 0px 0.1rem 0.5rem;
 }
-[data-entity="DISEASE"] {
+
+[data-entity] {
   .entity;
 }
-[data-entity="GENE"] {
-  .entity;
-}
-[data-entity="TARGET&DISEASE"] {
-  .entity
-}
-[data-entity="DRUG"] {
-  .entity
-}
-[data-entity="DISEASE"]::after {
+
+[data-entity]::after {
   .entity-after;
 }
-[data-entity="GENE"]::after {
-  .entity-after;
-}
-[data-entity="TARGET&DISEASE"]::after {
-  .entity-after;
-}
-[data-entity="DRUG"]::after {
-  .entity-after;
-}
-/*[data-entity][data-entity="GENE"] {*/
-/*background: rgba(166, 226, 45, 0.2);*/
-/*border-color: rgb(166, 226, 45);*/
-/*}*/
-/*[data-entity][data-entity="GENE"]::after {*/
-/*background: rgb(166, 226, 45);*/
-/*}*/
-/*[data-entity][data-entity="GENE"] {*/
-/*background: rgba(196, 146, 145, 0.2);*/
-/*border-color: rgb(196, 146, 145);*/
-/*}*/
-/*[data-entity][data-entity="GENE"]::after {*/
-/*background: rgb(196, 146, 145);*/
-/*}*/
-[data-entity][data-entity="DRUG"] {
-  background: rgba(224, 0, 132, 0.2);
-  border-color: rgb(224, 0, 132);
+
+[data-entity][data-entity] {
   cursor: pointer;
 }
-[data-entity][data-entity="DRUG"]::after {
-  background: rgb(224, 0, 132);
+
+.nlpviscontainer{
+display:flex;
+flex-flow:column;
+width:100%;
 }
-/*[data-entity][data-entity="DRUG"] {*/
-/*background: rgba(67, 198, 102, 0.2);*/
-/*border-color: rgb(67, 198, 102);*/
-/*}*/
-/*[data-entity][data-entity="DRUG"]::after {*/
-/*background: rgb(67, 198, 102);*/
-/*}*/
-[data-entity][data-entity="DISEASE"] {
-  background: rgba(67, 198, 252, 0.2);
-  border-color: rgb(67, 198, 252);
-  cursor: pointer;
+
+.nlp_vis_legend{
+display:flex;
+flex-flow:row;
+width: 100%;
+background-color: c7ced9;
+margin-bottom:20px;
 }
-[data-entity][data-entity="DISEASE"]::after {
-  background: rgb(67, 198, 252);
+
+.abstracts{
+display:flex;
+flex-flow:column;
+overflow-y:scroll;
 }
-/*[data-entity][data-entity="CHEMICAL"] {*/
-/*background: rgba(253, 151, 32, 0.2);*/
-/*border-color: rgb(253, 151, 32);*/
-/*}*/
-/*[data-entity][data-entity="CHEMICAL"]::after {*/
-/*background: rgb(253, 151, 32);*/
-/*}*/
-/*[data-entity][data-entity="ANATOMY"] {*/
-/*background: rgba(253, 151, 32, 0.2);*/
-/*border-color: rgb(253, 151, 32);*/
-/*}*/
-/*[data-entity][data-entity="ANATOMY"]::after {*/
-/*background: rgb(253, 151, 32);*/
-/*}*/
-/*[data-entity][data-entity="NAMEDGROUP"] {*/
-/*background: rgba(142, 125, 255, 0.2);*/
-/*border-color: rgb(142, 125, 255);*/
-/*}*/
-/*[data-entity][data-entity="NAMEDGROUP"]::after {*/
-/*background: rgb(142, 125, 255);*/
-/*}*/
-/*[data-entity][data-entity="PROCESS"] {*/
-/*background: rgba(255, 204, 0, 0.2);*/
-/*border-color: rgb(255, 204, 0);*/
-/*}*/
-/*[data-entity][data-entity="PROCESS"]::after {*/
-/*background: rgb(255, 204, 0);*/
-/*}*/
-/*[data-entity][data-entity="PSICHIATRY"] {*/
-/*background: rgba(255, 204, 0, 0.2);*/
-/*border-color: rgb(255, 204, 0);*/
-/*}*/
-/*[data-entity][data-entity="PSICHIATRY"]::after {*/
-/*background: rgb(255, 204, 0);*/
-/*}*/
-/*[data-entity][data-entity="PHENOTYPE"] {*/
-/*background: rgba(255, 204, 0, 0.2);*/
-/*border-color: rgb(255, 204, 0);*/
-/*}*/
-/*[data-entity][data-entity="PHENOTYPE"]::after {*/
-/*background: rgb(255, 204, 0);*/
-/*}*/
-/*[data-entity][data-entity="INFORMATIONSCIENCE"] {*/
-/*background: rgba(47, 187, 171, 0.2);*/
-/*border-color: rgb(47, 187, 171);*/
-/*}*/
-/*[data-entity][data-entity="INFORMATIONSCIENCE"]::after {*/
-/*background: rgb(47, 187, 171);*/
-/*}*/
-/*[data-entity][data-entity="GENE"] {*/
-/*background: rgba(47, 187, 171, 0.2);*/
-/*border-color: rgb(47, 187, 171);*/
-/*}*/
-/*[data-entity][data-entity="GENE"]::after {*/
-/*background: rgb(47, 187, 171);*/
-/*}*/
-/*[data-entity][data-entity="ANTROPOLOGY"] {*/
-/*background: rgba(153, 153, 153, 0.2);*/
-/*border-color: rgb(153, 153, 153);*/
-/*}*/
-/*[data-entity][data-entity="ANTROPOLOGY"]::after {*/
-/*background: rgb(153, 153, 153);*/
-/*}*/
-/*[data-entity][data-entity="HUMANITIES"] {*/
-/*background: rgba(153, 153, 153, 0.2);*/
-/*border-color: rgb(153, 153, 153);*/
-/*}*/
-/*[data-entity][data-entity="HUMANITIES"]::after {*/
-/*background: rgb(153, 153, 153);*/
-/*}*/
-/*[data-entity][data-entity="HEALTHCARE"] {*/
-/*background: rgba(153, 153, 153, 0.2);*/
-/*border-color: rgb(153, 153, 153);*/
-/*}*/
-/*[data-entity][data-entity="HEALTHCARE"]::after {*/
-/*background: rgb(153, 153, 153);*/
-/*}*/
-/*[data-entity][data-entity="TECHNOLOGY"] {*/
-/*background: rgba(153, 153, 153, 0.2);*/
-/*border-color: rgb(153, 153, 153);*/
-/*}*/
-/*[data-entity][data-entity="TECHNOLOGY"]::after {*/
-/*background: rgb(153, 153, 153);*/
-/*}*/
-/*[data-entity][data-entity="PUBLICATION"] {*/
-/*background: rgba(153, 153, 53, 0.2);*/
-/*border-color: rgb(153, 153, 53);*/
-/*}*/
-/*[data-entity][data-entity="PUBLICATION"]::after {*/
-/*background: rgb(153, 153, 53);*/
-/*}*/
-[data-entity][data-entity="TARGET&DISEASE"] {
-  background: rgba(105, 145, 243, 0.2);
-  border-color: rgb(105, 145, 243);
-  /*   display: inline; */
-  border: 1px dashed;
+
+[data-entity][data-entity].legenditem{
+  cursor: auto;
 }
-[data-entity][data-entity="TARGET&DISEASE"]::after {
-  background: rgb(105, 145, 243);
+
+.nlp-tag-entity-color {
+    border: 1px grey solid;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    vertical-align: bottom;
+    }
+
+
+.nlp_vis_legend {
+    position: absolute;
+    background-color: white;
 }
-/*[data-entity][data-entity="PATHWAY"] {*/
-/*background: rgba(205, 85, 143, 0.2);*/
-/*border-color: rgb(205, 85, 143);*/
-/*!*   display: inline; *!*/
-/*border: 1px dashed;*/
-/*}*/
-/*[data-entity][data-entity="PATHWAY"]::after {*/
-/*background: rgb(205, 85, 143);*/
-/*}*/
-[data-entity][data-entity="GENE"] {
-  background: rgba(87, 227, 81, 0.2);
-  border-color: rgb(87, 227, 81);
-  cursor: pointer;
+
+
+.snippet.ng-scope:nth-child(2) {
+    margin-top: 30px !important;
 }
-[data-entity][data-entity="GENE"]::after {
-  background: rgb(87, 227, 81);
+
+#annot {
+    position: absolute;
+    z-index: 98;
+    width: 300px;
 }
-/*[data-entity][data-entity="LOC"] {*/
-/*background: rgba(180, 180, 180, 0.2);*/
-/*border-color: rgb(180, 180, 180);*/
-/*}*/
-/*[data-entity][data-entity="LOC"]::after {*/
-/*background: rgb(180, 180, 180);*/
-/*}*/
-/*.selectedWordTitle {*/
-/*padding: 5px;*/
-/*background: #dddddd;*/
-/*vertical-align: baseline;*/
-/*.actions {*/
-/*top: 2px;*/
-/*right: 0px;*/
-/*padding-left: 5px;*/
-/*display: inline-block;*/
-/*vertical-align: baseline;*/
-/*> .action-item {*/
-/*padding-right: 1px;*/
-/*padding-top: 2px;*/
-/*padding-bottom: 2px;*/
-/*cursor: pointer;*/
-/*> i {*/
-/*vertical-align: baseline;*/
-/*}*/
-/*}*/
-/*}*/
-/*}*/
+
+.catdiv {
+    display: inline-block;
+}
+
+.textdiv {
+    display: inline-block;
+}
+
+.iddiv {
+    display: inline-block;
+}
+
+.newtype {
+    display: block;
+}
+
+.commentdiv {
+    display: block;
+}
+
+.submitdiv {
+    margin-bottom: 10px;
+}
+
+.charspan {
+    display: inline-block;
+    position: relative;
+}
+
+
+
+
+
+
+
 
