@@ -4,7 +4,6 @@ import {FilterBarQueryFilterProvider} from 'ui/filter_bar/query_filter';
 import _ from 'lodash';
 
 
-// const module = uiModules.get('kibana');
 const module = uiModules.get('kibana/pubmed_abstracts');
 
 module.directive('abstractRender', function ($compile, $sce, Private) {
@@ -74,10 +73,112 @@ module.directive('abstractRender', function ($compile, $sce, Private) {
       };
       
       
+   function submitEdits(document){
+
+	   fetch('../api/elasticsearch_status/indexedit', {
+           method: 'post',
+           body: JSON.stringify(document),
+           headers: {
+               "Content-Type": "application/json",
+               "kbn-xsrf": "kibana"
+           }
+         }).then(response => response.json())
+         .then(data => console.log(data));
+   }
+   
+   function getSubmitDocument(annotation, newtype, newval, commentdiv, docId){
+	   let username = "";
+	   return { 
+		   docId: docId,  
+	       fieldName: scope.field, 
+	       username: username,
+	       entity: annotation,
+	       edit: {"category": newtype, "value": newval,"comment": commentdiv}
+	   } 
+   }
+      
+   function addEditPopup(span, charannotations){
+      //set the popup for click
+	  var annotElem = document.createElement("div")
+	  annotElem.style.display = 'none'
+	  annotElem.classList.add("annot");
+	  span.prepend(annotElem);
+
+	    //list each annotation cat, id, text
+	    for ( const an of charannotations){
+	       var adiv = document.createElement("span")
+	       annotElem.appendChild(adiv)
+	       
+	       let catdiv = document.createElement("div")
+	       catdiv.innerHTML = "Type:" + an.dict_id +'; '
+	       adiv.appendChild(catdiv)
+	       catdiv.classList.add("catdiv");
+	       
+	       let textdiv = document.createElement("div")
+	       textdiv.innerHTML = 'Text: ' + scope.abstract.substring(an.start, an.end)+';&nbsp;'
+	       adiv.appendChild(textdiv)
+	       textdiv.classList.add("textdiv");
+	       
+	       let iddiv = document.createElement("div")
+	       iddiv.innerHTML = 'set filter'
+	       iddiv.classList.add("iddiv");
+	       adiv.appendChild(iddiv)
+	       
+	       iddiv.addEventListener("click", function(event){
+	            console.log("SET FILTER")
+	       });
+	       
+	       let newtype = document.createElement('input'); 
+	       newtype.type = "text"; 
+	       newtype.classList.add("newtype");
+	       newtype.placeholder = 'New type'
+	       adiv.appendChild(newtype)
+	       
+	       let newval = document.createElement('input'); 
+	       newval.type = "text"; 
+	       newval.classList.add("newval");
+	       newval.placeholder = 'New value'
+	       adiv.appendChild(newval)
+	       
+	       let commentdiv = document.createElement('input'); 
+	       commentdiv.type = "text"; 
+	       commentdiv.classList.add("commentdiv");
+	       commentdiv.placeholder = 'Comment'
+	       adiv.appendChild(commentdiv)
+	       
+	       let submitdiv = document.createElement("button")
+	       submitdiv.innerHTML = 'submit'
+	       submitdiv.classList.add("submitdiv");
+	       adiv.appendChild(submitdiv)
+	       
+	       submitdiv.addEventListener("click", function(event){
+	    	    let absdiv = adiv.closest(".snippet")
+	    	    let dicIdLink = absdiv.querySelector("a[data-pub-id]")
+	    	    let docId = dicIdLink.getAttribute('data-pub-id')
+	            submitEdits(getSubmitDocument(an, newtype.value, newval.value, commentdiv.value, docId))
+	       });
+	       
+	    }
+        span.addEventListener("click", function(event){ 
+    	  annotElem.style.display = 'inline'
+	    });
+	    let closediv = document.createElement("button")
+	    closediv.innerHTML = 'close';
+	    closediv.classList.add("closediv");
+	    annotElem.appendChild(closediv);
+	    closediv.addEventListener("click", function(event){
+	    	annotElem.style.display = "none";
+	    	event.stopPropagation();
+	    });
+     }
+      
+      
+      
       function addAnnotatedSpan(span, currAnnots, elem){
-    	//configure and add currspan to elem//*****
+    	//configure and add currspan to elem
     	let cats = [...new Set(currAnnots.map(x => x.dict_id))];
     	let entids = [...new Set(currAnnots.map(x => x.ent_id))];
+    	
         if(cats.length>1){
           span.setAttribute('category', 'mixed')
           span.style.backgroundColor = '#ff0066' // TODO: allow choice of default color for overlaps 
@@ -85,16 +186,21 @@ module.directive('abstractRender', function ($compile, $sce, Private) {
         else{
           span.setAttribute('category', cats[0])
           span.style.backgroundColor = scope.tagcolor[cats[0]]
-          
-          
         }
         if(entids.length==1){
           span.setAttribute('ent_id', entids[0])
         }
         span.style.whiteSpace = "pre-wrap"
+        span.classList.add("charspan");
     	elem.appendChild(span);
-    	//TODO:  addEditPopup(span, charannotations)
+    	if (cats.length >0){
+    		addEditPopup(span, currAnnots)
+    	}
+    	
       }
+      
+      
+
       
       function addAnnotation(text, annotations, elem) {
           // build a dict of offset to annotations
@@ -108,12 +214,12 @@ module.directive('abstractRender', function ($compile, $sce, Private) {
     	  }
     	  
     	  var currspan = document.createElement("span"); 
-    	  var currAnnots = offsetAnnotations[0] || [];
+    	  var currAnnots = offsetAnnotations[0] || []; // start 
     	  
     	  for (const  charindex of Array(text.length).keys()) { //for each char
     	    let charannotations = offsetAnnotations[charindex.toString()] || []
     	    
-    	    if(! _.isEqual(charannotations, currAnnots)){
+    	    if(! _.isEqual(charannotations, currAnnots)){ //entering a differently annotated sequence of chars
     	    	addAnnotatedSpan(currspan, currAnnots, elem)
     	    	
     	    	//start a new span
@@ -177,21 +283,23 @@ module.directive('abstractRender', function ($compile, $sce, Private) {
           }); 
 
         // Scan the dom elements and attach filtering behaviour
-        d3.select($element[0]).selectAll('[category]')
-          .on('click', function () {
-            const el = d3.select(this);
-            const ent_id = el.attr('ent_id');
-            const dataEntity = el.attr('category');
-            const label = el.text();
-            
-            if(Object.keys(scope.tagcolor).indexOf(dataEntity) != -1) {
-	            scope.createEntityFilter({
-	              ent_id,
-	              data_entity: dataEntity,
-	              label
-	            });
-            }
-          });
+//        d3.select($element[0]).selectAll('[category]')
+//          .on('click', function () {
+//            const el = d3.select(this);
+//            const ent_id = el.attr('ent_id');
+//            const dataEntity = el.attr('category');
+//            const label = el.text();
+//            
+//            if(Object.keys(scope.tagcolor).indexOf(dataEntity) != -1) {
+//	            scope.createEntityFilter({
+//	              ent_id,
+//	              data_entity: dataEntity,
+//	              label
+//	            });
+//            }
+//          });
+        
+
       }
 
       scope.$watch('field', function () {

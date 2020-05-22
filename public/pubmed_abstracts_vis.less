@@ -72,6 +72,7 @@ overflow-y:scroll;
 .nlp_vis_legend {
     position: absolute;
     background-color: white;
+    z-index:9999;
 }
 
 
@@ -79,10 +80,14 @@ overflow-y:scroll;
     margin-top: 30px !important;
 }
 
-#annot {
+.annot {
     position: absolute;
     z-index: 98;
     width: 300px;
+    background-color: lightgreen;
+    font-size: 12px;
+    display: inline;
+    top: 18px;
 }
 
 .catdiv {
@@ -106,14 +111,18 @@ overflow-y:scroll;
 }
 
 .submitdiv {
+    display: block;
     margin-bottom: 10px;
 }
 
 .charspan {
-    display: inline-block;
+    display: inline;
     position: relative;
 }
 
+.closediv{
+    z-index: 1000
+}
 
 
 
